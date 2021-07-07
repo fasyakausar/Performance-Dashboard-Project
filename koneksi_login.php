@@ -1,8 +1,8 @@
 <?php
 $server = "localhost";
 $user = "root";
-$password = "";
+$pass= "";
 $database = "dlogin";
 
-$koneksi = mysqli_connect($server, $user, $password, $database) or die (mysqli_error($koneksi));
+$koneksi = mysqli_connect($server, $user, $pass, $database) or die (mysqli_error($koneksi));
 ?>
