@@ -3,13 +3,13 @@
 //pangil koneksi database
 include "koneksi_login.php";
 
-$pass = md5($_POST['password']);
+$pass = $_POST['pass'];
 $username = mysqli_escape_string($koneksi, $_POST['user']);
-$password = mysqli_escape_string($koneksi, $pass);
-$level = mysqli_escape_string($koneksi, $_POST['level']);
+$pass = mysqli_escape_string($koneksi, $pass);
+$level = mysqli_escape_string($koneksi, $_POST['posisi']);
 
 //cek username terdaftar atau tidak
-$cek_user = mysqli_query($koneksi, "SELECT * FROM tadm WHERE user = '$username' and level='$level' ");
+$cek_user = mysqli_query($koneksi, "SELECT * FROM tadm WHERE user = '$username' and posisi='$level' ");
 $user_valid = mysqli_fetch_array($cek_user);
 
 //menguji jika username terdaftar
@@ -18,14 +18,14 @@ if($user_valid)
 {
     //jika username terdaftar
     //cek password sesuai atau tidak
-    if($password == $user_valid['password'])
+    if($pass == $user_valid['pass'])
     {
         //jika password sesuai
         //buat session
         session_start();
         $_SESSION['user'] = $user_valid['user'];
         $_SESSION['nama_lengkap'] = $user_valid['nama_lengkap'];
-        $_SESSION['level'] = $user_valid['level'];
+        $_SESSION['posisi'] = $user_valid['posisi'];
 
         //pengujian level user
         if($level == "PIC Regional")
