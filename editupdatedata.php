@@ -16,44 +16,46 @@
 			{
 				//Data akan diedit
 				$edit = mysqli_query($koneksi, " UPDATE tadm set
-												 user = '$_POST[tuser]',
-												 pass = '$_POST[tpass]'
+												 user = '$_POST[user]',
+												 pass = '$_POST[pass]',
+												 nama_lengkap = '$_POST[nama_lengkap]'
 												 WHERE id_adm = '$_GET[id]'
 											   ");
 			if($edit) //Jika edit sukses
 			{
 				echo "<script>
 						alert('Update Data Sukses!');
-						document.location='edit.php';
+						document.location='editupdatedata.php';
 					  </script>";
 			}
 			else //Jika edit gagal
 			{
 				echo "<script>
 						alert('Update Data GAGAL!');
-						document.location='edit.php';
+						document.location='editupdatedata.php';
 					  </script>";
 			}
 			}else
 			{
 				//Data akan disimpan baru
 				$simpan = mysqli_query($koneksi, "INSERT INTO tadm (user, pass)
-											  VALUES ('$_POST[tuser]', 
-											  		 '$_POST[tpass]'
+											  VALUES ('$_POST[user]', 
+											  		  '$_POST[pass]',
+													  '$_POST[nama_lengkap]'
 											  		 				)
 											 ");
 			if($simpan) //Jika simpan sukses
 			{
 				echo "<script>
 						alert('Login Success!');
-						document.location='edit.php';
+						document.location='editupdate.php';
 					  </script>";
 			}
 			else //Jika simpan gagal
 			{
 				echo "<script>
 						alert('Login Failed!');
-						document.location='edit.php';
+						document.location='editupdate.php';
 					  </script>";
 			}
 			}
@@ -84,7 +86,7 @@
 				{
 					echo "<script>
 						alert('Hapus Data Sukses!');
-						document.location='edit.php';
+						document.location='editupdatedata.php';
 					  </script>";
 			}
 				}
@@ -96,14 +98,15 @@
 			{
 				//Data akan diedit
 				$edit = mysqli_query($koneksi, " UPDATE tadm set
-												 user = '$_POST[tuser]',
-												 pass = '$_POST[tpass]'
+												 user = '$_POST[user]',
+												 pass = '$_POST[pass]',
+												 nama_lengkap ='$_POST[nama_lengkap]'
 												 WHERE id_adm = '$_GET[id]'
 											   ");
 			if($edit) //Button back
 			{
 				echo "<script>
-						document.location='konfirmasiedit.php';
+						document.location='menulogin.php';
 						alert('Apakah Anda Yakin Ingin Kembali ?');
 					  </script>";
 			}
@@ -116,13 +119,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>LOGIN SYSTEM</title>
+	<title>EDIT DATA</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
 <div class="container"></div>
 	<h1 class="text-center">Performance Dashboard</h1>
-	<h2 class="text-center">LOGIN SYSTEM</h2>
+	<h2 class="text-center">EDIT DATA USER</h2>
 
 <!--start update form -->
 	<div class="card mt-5">
@@ -131,13 +134,18 @@
   </div>
   <div class="card-body">
   	<form method="post" action=" ">
+	  <div class="form-group">
+  			<label>Nama Lengkap</label>
+  			<input type="text" name="nama_lengkap" value="<?=@$vnama?>" class="form-control" placeholder="Input Nama Lengkap Baru" required>
+  		</div>
+  		
   		<div class="form-group">
   			<label>Username</label>
-  			<input type="text" name="tuser" value="<?=@$vnama?>" class="form-control" placeholder="Input Username Baru" required>
+  			<input type="text" name="user" value="<?=@$vnama?>" class="form-control" placeholder="Input Username Baru" required>
   		</div>
   		<div class="form-group">
   			<label>Password</label>
-  			<input type="text" name="tpass" value="<?=@$vnim?>" class="form-control" placeholder="Input Password Baru" required>
+  			<input type="text" name="pass" value="<?=@$vnim?>" class="form-control" placeholder="Input Password Baru" required>
   		</div>
   		
   		<button type="update" class="btn btn-primary" name="bupdate">Update</button>
@@ -147,17 +155,20 @@
 	</div>
 <!-- end update form -->
 
-<!--start update table -->
-	<div class="card mt-5">
-  	  <div class="card-header bg-secondary text-white">
+<!--awal card tabel -->
+<div class="card mt-5">
+  	  <div class="card-header bg-success text-white">
     List Data User
   </div>
   <div class="card-body">
   	<table class="table table-bordered table-black-50">
   		<tr>
   			<th>No.</th>
+  			<th>Nama User</th>
   			<th>Username</th>
   			<th>Password</th>
+  			<th>Role</th>
+  			<th>Action</th>
   		</tr>
   		<?php
   			$no = 1;
@@ -167,18 +178,21 @@
   		?>
   		<tr>
   			<td><?=$no++;?></td>
+  			<td><?=$data['nama_lengkap']?></td>
   			<td><?=$data['user']?></td>
   			<td><?=$data['pass']?></td>
+  			<td><?=$data['posisi']?></td>
   			<td>
-  				<a href="edit.php?hal=edit&id=<?=$data['id_adm']?>" onclick= "return confirm('Apakah yakin ingin mengedit ?')" class="btn btn-danger"> EDIT </a>
-  				<a href="edit.php?hal=hapus&id=<?=$data['id_adm']?>" onclick ="return confirm('Apakah yakin ingin mengahapus ?')" class="btn btn-dark"> HAPUS </a>
+  				<a href="editupdatedata.php?hal=edit&id=<?=$data['id_adm']?>" class="btn btn-danger text-white"> EDIT </a>
+  				<a href="editupdatedata.php?hal=hapus&id=<?=$data['id_adm']?>" onclick ="return confirm('Apakah yakin ingin mengahapus ?')" class="btn btn-dark"> HAPUS </a>
   			</td>
   		</tr>
   	<?php endwhile; //penutup while ?>
   	</table>
   </div>
 	</div>
-<!-- end update table -->
+<!-- akhir card tabel -->
+
 
 
 </div>
